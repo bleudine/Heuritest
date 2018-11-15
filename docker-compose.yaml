@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+  heuritest-local:
+    container_name: heuritest-local
+    hostname: heuritest-local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    -  "80:80"
+    volumes:
+    - ./nginx.conf:/etc/nginx/conf.d/default.conf
