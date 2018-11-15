@@ -1,17 +1,11 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import {logger}                                                   from 'redux-logger'
-import createSagaMiddleware            from 'redux-saga'
-import mainSaga                   from './mainSaga';
-
-const reducer = (state = {}, action) => {
-    switch(action) {
-        default:
-            return state;
-    }
-};
+import createSagaMiddleware                                       from 'redux-saga'
+import mainSaga                                                   from './mainSaga';
+import {listing}                                                  from "../reducers";
 
 const root = combineReducers({
-    reducer
+    listing
 });
 
 const sagaMiddleware = createSagaMiddleware();

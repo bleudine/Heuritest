@@ -35,6 +35,16 @@ module.exports = (environment) => {
                 },
             ]
         },
+        devServer: {
+            proxy: {
+                '/api': {
+                    target: 'https://api.coinmarketcap.com/v2',
+                    pathRewrite: { '^/api': ''},
+                    changeOrigin: true,
+                    secure: false,
+                }
+            }
+        },
         plugins: [
             new HtmlWebPackPlugin({
                 template: "./src/index.html",

@@ -1,0 +1,30 @@
+.CryptoItemList-container {
+
+  display: grid;
+  grid-template-columns: .25fr repeat(6, 1fr);
+  padding: 1em 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  box-sizing: border-box;
+
+  span {
+    font-size: .95em;
+    text-align: end;
+  }
+
+  .CryptoItemList-name {
+    margin-left: 1em;
+    text-align: start;
+  }
+
+  .CryptoItemList-price, .CryptoItemList-volume {
+    color: rgb(90, 137, 230);
+  }
+
+  .CryptoItemList-change {
+    color: red;
+
+    &.positive {
+      color: green;
+    }
+  }
+}
