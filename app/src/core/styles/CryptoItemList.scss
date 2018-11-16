@@ -14,6 +14,12 @@
   .CryptoItemList-name {
     margin-left: 1em;
     text-align: start;
+    display: flex;
+    align-items: center;
+
+    img {
+      margin-right: 1em;
+    }
   }
 
   .CryptoItemList-price, .CryptoItemList-volume {
@@ -27,4 +33,9 @@
       color: green;
     }
   }
+}
+
+.CryptoItemList-container:hover {
+
+  background-color: rgba(0, 0, 0, .1);
 }
