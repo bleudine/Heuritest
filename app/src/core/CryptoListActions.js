@@ -2,6 +2,8 @@ import React, { Component }                                         from 'react'
 import { connect }                                                  from 'react-redux';
 import { reverseListOrder, sortList, convertCurrency, limitResult } from "../actions";
 
+import './styles/CryptoListActions.scss';
+
 /*
 *
 * Sort button to sort each columns in ascending or descending order
@@ -45,7 +47,7 @@ const SelectCurrency = connect(
         convertCurrency: currency => dispatchProps.convertCurrency(currency, stateProps.limit, stateProps.start)
     })
 )(({ convertCurrency, currencies }) => (
-    <select onChange={e => convertCurrency(e.target.value)}>
+    <select className="CryptoListActions-currency" onChange={e => convertCurrency(e.target.value)}>
         {
             currencies.map((currency, index) => (
                 <option value={currency} key={`${currency}-${index}`}>{currency}</option>
@@ -61,7 +63,7 @@ const SelectCurrency = connect(
 * */
 
 const FilterName = ({ filterName, value }) => (
-    <input placeholder="Search" type="text" onChange={(e) => filterName(e.target.value)} value={value}/>
+    <input className="CryptoListActions-search" placeholder="Search" type="text" onChange={(e) => filterName(e.target.value)} value={value}/>
 );
 
 /*
@@ -86,7 +88,7 @@ const ResultNumber = connect(
         limitResult: limit => dispatchProps.limitResult(stateProps.currency, limit, stateProps.start)
     })
 )(({ limitResult }) => (
-    <select onChange={e => limitResult(e.target.value)}>
+    <select className="CryptoListActions-limiter" onChange={e => limitResult(e.target.value)}>
         {
             [100, 10, 25, 50].map((number, index) => (
                 <option key={`key-${number}-${index}`} value={number}>{number}</option>
@@ -99,9 +101,12 @@ class CryptoListActions extends Component {
     render () {
         return (
             <div className="CryptoListActions">
-                <SelectCurrency/>
-                <FilterName filterName={this.props.filterName} value={this.props.filter}/>
-                <ResultNumber/>
+                <div className="CryptoListActions-actions">
+                    <button className="CryptoListActions-buttonTab">Cryptocurrencies</button>
+                    <FilterName filterName={this.props.filterName} value={this.props.filter}/>
+                    <SelectCurrency/>
+                    <ResultNumber/>
+                </div>
                 <div className="CryptoItemList-container">
                     <SortButton listKey="rank" label="#" nested={false}/>
                     <SortButton listKey="name" label="Name" nested={false}/>

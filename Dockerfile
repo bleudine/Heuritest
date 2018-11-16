@@ -2,12 +2,14 @@ FROM node:10 as build-stage
 
 RUN npm i -g yarn
 
-RUN cd /app && yarn
+COPY . /app
 
-WORKDIR /app
+RUN cd /app/app && yarn
+
+WORKDIR /app/app
 
 RUN yarn run build
 
 FROM nginx:1.15
 
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/app/dist /usr/share/nginx/html

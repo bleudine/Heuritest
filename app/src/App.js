@@ -10,7 +10,6 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <Fragment>
-                    <h2>Hello !</h2>
                     <CryptoList/>
                 </Fragment>
             </Provider>
