@@ -1,4 +1,5 @@
 # HEURITEST
 
 
-clone the repo, `cd /app && yarn run local` and enjoy the goodness 
+* `cd app/ && yarn run local` to start webpack dev server
+* `docker-compose up ` to serve a production build from nginx server in a docker container
