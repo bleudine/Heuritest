@@ -4,4 +4,17 @@
   grid-template-columns: auto;
   max-width: 60em;
   margin: auto;
+
+
+  .CryptoList-errorContainer {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      text-align: center;
+      color: rgba(255, 0, 0, .8);
+    }
+  }
 }

@@ -1,10 +1,5 @@
 import {
-    GET_LISTINGS,
-    GET_CRYPTO,
-    RECEIVED_LISTINGS,
-    REVERSE_LIST_ORDER,
-    SORT_LIST,
-    RECEIVED_NEW_CURRENCY, CONVERT_CURRENCY, SET_CURRENCY, SET_LIMIT
+    RECEIVED_LISTINGS, SORT_LIST, SET_CURRENCY, SET_LIMIT, RECEIVED_LISTINGS_ERROR
 } from "../actions";
 
 const defaultState = {
@@ -24,16 +19,13 @@ export const listing = (state = defaultState.listing, action) => {
         case RECEIVED_LISTINGS:
             return {
                 ...state,
-                list: action.list.sort((a, b) => a.rank - b.rank)
+                list: action.list.sort((a, b) => a.rank - b.rank),
+                error: false,
             };
-        case REVERSE_LIST_ORDER:
-            let reversed = [];
-            for (let i in state.list) {
-                reversed = [state.list[i], ...reversed]
-            }
+        case RECEIVED_LISTINGS_ERROR:
             return {
                 ...state,
-                list: reversed
+                error: true,
             };
         case SORT_LIST:
             return {

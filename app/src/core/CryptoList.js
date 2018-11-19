@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 import { connect }           from 'react-redux';
-import { getCryptoListings } from "../actions";
+import { fetchListing } from '../store/store';
 
 import CryptoItemList from './CryptoItemList';
 import CryptoListActions from './CryptoListActions';
@@ -29,6 +29,12 @@ class CryptoList extends Component {
             <div className="CryptoList-container">
                 <CryptoListActions filter={this.state.filter} filterName={this.filterName.bind(this)}/>
                 {
+                    this.props.error &&
+                    <div className="CryptoList-errorContainer">
+                        <span className="">An error occured. Please try again later.</span>
+                    </div>
+                }
+                {
                     this.props.list.filter(crypto => crypto.name.includes(this.state.filter)).map((crypto, index) => (
                         <CryptoItemList key={`key-${crypto.id}-${index}`} crypto={crypto}/>
                     ))
@@ -43,10 +49,11 @@ export default connect(
         list: state.listing.list,
         currency: state.listing.selected,
         limit: state.listing.limit,
-        start: state.listing.start
+        start: state.listing.start,
+        error: state.listing.error,
     }),
     dispatch => ({
-        getListings: (currency, limit, start) => dispatch(getCryptoListings(currency, limit, start))
+        getListings: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
     }),
     (stateProps, dispatchProps, ownProps) => ({
         ...stateProps,

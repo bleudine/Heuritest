@@ -1,6 +1,7 @@
-import React, { Component }                                         from 'react';
-import { connect }                                                  from 'react-redux';
-import { reverseListOrder, sortList, convertCurrency, limitResult } from "../actions";
+import React, { Component } from 'react';
+import { connect }          from 'react-redux';
+import { sortList }         from "../actions";
+import { fetchListing }     from "../store/store";
 
 import './styles/CryptoListActions.scss';
 
@@ -38,7 +39,7 @@ const SelectCurrency = connect(
         start     : state.listing.start
     }),
     dispatch => ({
-        convertCurrency: (currency, limit, start) => dispatch(convertCurrency(currency, limit, start))
+        convertCurrency: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
     }),
     (stateProps, dispatchProps, ownProps) => ({
         ...stateProps,
@@ -63,7 +64,8 @@ const SelectCurrency = connect(
 * */
 
 const FilterName = ({ filterName, value }) => (
-    <input className="CryptoListActions-search" placeholder="Search" type="text" onChange={(e) => filterName(e.target.value)} value={value}/>
+    <input className="CryptoListActions-search" placeholder="Search" type="text"
+           onChange={(e) => filterName(e.target.value)} value={value}/>
 );
 
 /*
@@ -79,7 +81,7 @@ const ResultNumber = connect(
         start   : state.listing.start
     }),
     dispatch => ({
-        limitResult: (currency, limit, start) => dispatch(limitResult(currency, limit, start))
+        limitResult: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
     }),
     (stateProps, dispatchProps, ownProps) => ({
         ...stateProps,
