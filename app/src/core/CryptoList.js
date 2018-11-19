@@ -4,10 +4,12 @@ import { fetchListing } from '../store/store';
 
 import CryptoItemList from './CryptoItemList';
 import CryptoListActions from './CryptoListActions';
+import Loading from './component/Loading';
+import { connectedListFetcher } from './container/connectedListFetcher';
 
 import './styles/CryptoList.scss';
 
-class CryptoList extends Component {
+class List extends Component {
 
     state = {
         filter: '',
@@ -20,11 +22,12 @@ class CryptoList extends Component {
     }
 
     componentWillMount () {
-        this.props.getListings()
+        const {currency, limit, start} = this.props;
+        this.props.fetchList(currency, limit, start);
     }
 
     render () {
-
+        
         return (
             <div className="CryptoList-container">
                 <CryptoListActions filter={this.state.filter} filterName={this.filterName.bind(this)}/>
@@ -35,6 +38,11 @@ class CryptoList extends Component {
                     </div>
                 }
                 {
+                    this.props.loading &&
+                    <Loading />
+                }
+                {
+                    !this.props.loading &&
                     this.props.list.filter(crypto => crypto.name.includes(this.state.filter)).map((crypto, index) => (
                         <CryptoItemList key={`key-${crypto.id}-${index}`} crypto={crypto}/>
                     ))
@@ -44,21 +52,12 @@ class CryptoList extends Component {
     }
 }
 
-export default connect(
+const CryptoList = connectedListFetcher(connect(
     state => ({
         list: state.listing.list,
-        currency: state.listing.selected,
-        limit: state.listing.limit,
-        start: state.listing.start,
         error: state.listing.error,
-    }),
-    dispatch => ({
-        getListings: (currency, limit, start) => () => dispatch(fetchListing(currency, limit, start))
-    }),
-    (stateProps, dispatchProps, ownProps) => ({
-        ...stateProps,
-        ...dispatchProps,
-        ...ownProps,
-        getListings: dispatchProps.getListings(stateProps.currency, stateProps.limit, stateProps.start)
+        loading: state.listing.loading,
     })
-)(CryptoList)
+)(props => <List {...props} />))
+
+export default CryptoList;

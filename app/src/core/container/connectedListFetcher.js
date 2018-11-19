@@ -1,24 +1,38 @@
-import React            from 'react';
-import { connect }      from 'react-redux';
-import { sortList }     from "../actions";
-import { fetchListing } from "../store/store";
+import React, { Component }             from 'react';
+import { connect }                      from 'react-redux';
+import { fetchListing }                 from "../../store/store";
 
 
-export function connectedListFetcher(Component) {
-    return connect(
+export function connectedListFetcher(WrappedComponent) {
+
+    class ConnectedListFetcher extends Component {
+
+        fetchList(defaultValues) {
+            const { currency, limit, start } = defaultValues;
+            this.props.fetchList(currency, limit, start);
+        }
+
+        render() {
+            const {currency, limit, start} = this.props;
+
+            return <WrappedComponent
+                        {...this.props}
+                        action={this.fetchList.bind(this)} 
+                        defaultValues={{currency, limit, start}} />
+        }
+
+    }
+
+    const ListFetcher = connect(
         state => ({
-            currencies: state.listing.currencies,
+            currency  : state.listing.selected,
             limit     : state.listing.limit,
             start     : state.listing.start
         }),
         dispatch => ({
-            fetchListing: (limit, start) => (currency) => dispatch(fetchListing(currency, limit, start))
-        }),
-        (stateProps, dispatchProps, ownProps) => ({
-            ...stateProps,
-            ...dispatchProps,
-            ...ownProps,
-            fetchListing: dispatchProps.fetchListing(stateProps.limit, stateProps.start)
+            fetchList: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
         })
-    )(Component);
+    )(ConnectedListFetcher);
+
+    return ListFetcher;
 };

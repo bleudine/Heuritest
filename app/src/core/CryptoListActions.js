@@ -1,103 +1,25 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux';
-import { sortList }         from "../actions";
-import { fetchListing }     from "../store/store";
+
+import FilterName from './component/FilterName';
+import Select from './component/Select';
+import ConnectedSortButton from './container/ConnectedSortButton';
+import { connectedListFetcher } from './container/connectedListFetcher';
 
 import './styles/CryptoListActions.scss';
 
-/*
-*
-* Sort button to sort each columns in ascending or descending order
-*
-* */
-
-const SortButton = connect(
-    state => ({}),
-    dispatch => ({
-        sort: (key, nested) => dispatch(sortList(key, nested))
-    }),
-    (stateProps, dispatchProps, ownProps) => ({
-        ...stateProps,
-        ...dispatchProps,
-        ...ownProps,
-        sort: () => dispatchProps.sort(ownProps.listKey, ownProps.nested)
-    })
-)(({ sort, label }) => (
-    <button onClick={sort}>{label}</button>
+const SelectResults = connectedListFetcher((props) => (
+    <Select {...props} options={[100, 10, 25, 50]} className="CryptoListActions-limiter" value="limit" />
 ));
 
-/*
-*
-* Currency selector to convert currency in the table
-*
-* */
 
-const SelectCurrency = connect(
+const SelectCurrency = connectedListFetcher(connect(
     state => ({
         currencies: state.listing.currencies,
-        limit     : state.listing.limit,
-        start     : state.listing.start
-    }),
-    dispatch => ({
-        convertCurrency: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
-    }),
-    (stateProps, dispatchProps, ownProps) => ({
-        ...stateProps,
-        ...dispatchProps,
-        ...ownProps,
-        convertCurrency: currency => dispatchProps.convertCurrency(currency, stateProps.limit, stateProps.start)
     })
-)(({ convertCurrency, currencies }) => (
-    <select className="CryptoListActions-currency" onChange={e => convertCurrency(e.target.value)}>
-        {
-            currencies.map((currency, index) => (
-                <option value={currency} key={`${currency}-${index}`}>{currency}</option>
-            ))
-        }
-    </select>
-));
-
-/*
-*
-* Search field
-*
-* */
-
-const FilterName = ({ filterName, value }) => (
-    <input className="CryptoListActions-search" placeholder="Search" type="text"
-           onChange={(e) => filterName(e.target.value)} value={value}/>
-);
-
-/*
-*
-* Button to limit results per page
-*
-* */
-
-const ResultNumber = connect(
-    state => ({
-        currency: state.listing.selected,
-        limit   : state.listing.limit,
-        start   : state.listing.start
-    }),
-    dispatch => ({
-        limitResult: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
-    }),
-    (stateProps, dispatchProps, ownProps) => ({
-        ...stateProps,
-        ...dispatchProps,
-        ...ownProps,
-        limitResult: limit => dispatchProps.limitResult(stateProps.currency, limit, stateProps.start)
-    })
-)(({ limitResult }) => (
-    <select className="CryptoListActions-limiter" onChange={e => limitResult(e.target.value)}>
-        {
-            [100, 10, 25, 50].map((number, index) => (
-                <option key={`key-${number}-${index}`} value={number}>{number}</option>
-            ))
-        }
-    </select>
-));
+)((props) => (
+    <Select {...props} options={props.currencies} className="CryptoListActions-currency" value="currency"/>
+)))
 
 class CryptoListActions extends Component {
     render () {
@@ -107,16 +29,16 @@ class CryptoListActions extends Component {
                     <button className="CryptoListActions-buttonTab">Cryptocurrencies</button>
                     <FilterName filterName={this.props.filterName} value={this.props.filter}/>
                     <SelectCurrency/>
-                    <ResultNumber/>
+                    <SelectResults/>
                 </div>
                 <div className="CryptoItemList-container">
-                    <SortButton listKey="rank" label="#" nested={false}/>
-                    <SortButton listKey="name" label="Name" nested={false}/>
-                    <SortButton listKey="market_cap" label="Market Cap" nested={true}/>
-                    <SortButton listKey="price" label="Price" nested={true}/>
-                    <SortButton listKey="volume_24h" label="Volume (24h)" nested={true}/>
-                    <SortButton listKey="circulating_supply" label="Cirulating Supply" nested={false}/>
-                    <SortButton listKey="percent_change_24h" label="Change (24h)" nested={true}/>
+                    <ConnectedSortButton listKey="rank" label="#" nested={false}/>
+                    <ConnectedSortButton listKey="name" label="Name" nested={false}/>
+                    <ConnectedSortButton listKey="market_cap" label="Market Cap" nested={true}/>
+                    <ConnectedSortButton listKey="price" label="Price" nested={true}/>
+                    <ConnectedSortButton listKey="volume_24h" label="Volume (24h)" nested={true}/>
+                    <ConnectedSortButton listKey="circulating_supply" label="Cirulating Supply" nested={false}/>
+                    <ConnectedSortButton listKey="percent_change_24h" label="Change (24h)" nested={true}/>
                 </div>
             </div>
         );

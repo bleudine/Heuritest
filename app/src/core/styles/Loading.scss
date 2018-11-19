@@ -1,0 +1,20 @@
+.Loading {
+    display: inline-block;
+    margin: 12em auto;
+    width: 3em;
+    height: 3em;
+    border: 3px solid rgba(0, 0, 0, .25);
+    border-radius: 50%;
+    border-top-color: rgba(0, 0, 0, .5);
+    animation: spin 1.2s linear infinite;
+    -webkit-animation: spin 1.2s linear infinite;
+  }
+  
+  @keyframes spin {
+
+    to { -webkit-transform: rotate(360deg); }
+  }
+
+  @-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+  }

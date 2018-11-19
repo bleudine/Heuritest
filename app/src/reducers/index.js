@@ -1,5 +1,5 @@
 import {
-    RECEIVED_LISTINGS, SORT_LIST, SET_CURRENCY, SET_LIMIT, RECEIVED_LISTINGS_ERROR
+    RECEIVED_LISTINGS, SORT_LIST, SET_CURRENCY, SET_LIMIT, RECEIVED_LISTINGS_ERROR, GET_LISTINGS
 } from "../actions";
 
 const defaultState = {
@@ -10,22 +10,30 @@ const defaultState = {
         limit     : 100,
         start     : 1,
         currencies: ['USD', 'GBP', 'EUR'],
-        selected  : 'USD'
+        selected  : 'USD',
+        loading: false,
     }
 };
 
 export const listing = (state = defaultState.listing, action) => {
     switch (action.type) {
+        case GET_LISTINGS:
+            return {
+                ...state,
+                loading: true,
+            }
         case RECEIVED_LISTINGS:
             return {
                 ...state,
                 list: action.list.sort((a, b) => a.rank - b.rank),
                 error: false,
+                loading: false,
             };
         case RECEIVED_LISTINGS_ERROR:
             return {
                 ...state,
                 error: true,
+                loading: false,
             };
         case SORT_LIST:
             return {
