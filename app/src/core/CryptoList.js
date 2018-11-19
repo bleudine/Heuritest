@@ -53,12 +53,12 @@ export default connect(
         error: state.listing.error,
     }),
     dispatch => ({
-        getListings: (currency, limit, start) => dispatch(fetchListing(currency, limit, start))
+        getListings: (currency, limit, start) => () => dispatch(fetchListing(currency, limit, start))
     }),
     (stateProps, dispatchProps, ownProps) => ({
         ...stateProps,
         ...dispatchProps,
         ...ownProps,
-        getListings: () => dispatchProps.getListings(stateProps.currency, stateProps.limit, stateProps.start)
+        getListings: dispatchProps.getListings(stateProps.currency, stateProps.limit, stateProps.start)
     })
 )(CryptoList)
